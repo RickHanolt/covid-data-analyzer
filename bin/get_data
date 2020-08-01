@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+require 'pry'
+require_relative '../config/environment'
+
+puts "What state would you like data for?"
+get_data = get.strip
+puts Scraper.new(get_data)
