@@ -1,7 +1,7 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "covid/data/analyzer/version"
+require "bin/get_data"
 
 Gem::Specification.new do |spec|
   spec.name          = "covid-data-analyzer"

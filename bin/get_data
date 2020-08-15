@@ -1,7 +1,8 @@
 #!/usr/bin/env ruby
 require 'pry'
-require_relative '../config/environment'
+require_relative '../lib/analyzer'
+require_relative '../lib/cli'
+require_relative '../lib/scraper'
+require_relative '../lib/state'
 
-puts "What state would you like data for?"
-get_data = get.strip
-puts State.new(get_data)
+CLI.welcome
