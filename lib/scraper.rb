@@ -56,7 +56,31 @@ class Scraper
   def self.historical_data
     doc = Nokogiri::HTML(open("https://apps.npr.org/dailygraphics/graphics/coronavirus-d3-us-map-20200312/table.html?initialWidth=1218&childId=responsive-embed-coronavirus-d3-us-map-20200312-table&parentTitle=Coronavirus%20Update%3A%20Maps%20Of%20US%20Cases%20And%20Deaths%20%3A%20Shots%20-%20Health%20News%20%3A%20NPR&parentUrl=https%3A%2F%2Fwww.npr.org%2Fsections%2Fhealth-shots%2F2020%2F03%2F16%2F816707182%2Fmap-tracking-the-spread-of-the-coronavirus-in-the-u-s
     "))
-    state = doc.css('div.div-table')
+    locations_data = {}
+    doc.css('div.div-table div.cell-group.state').each do |state|
+      location = state.css('div.cell.cell-inner.stateName').text.strip
+      locations_data[:"#{location}"] = {}
+      counter = 0
+      state.css('div.cell.sub-cell.week').each do |data_point|
+        if counter == 0
+          avg_case_3wk = data_point.text.strip
+          locations_data[location.to_sym][:"Average New Cases (3 Wks Ago)"] = avg_case_3wk
+        elsif counter == 1
+          avg_case_2wk = data_point.text.strip
+          locations_data[location.to_sym][:"Average New Cases (2 Wks Ago)"] = avg_case_2wk
+        elsif counter == 2
+          avg_case_1wk = data_point.text.strip
+          locations_data[location.to_sym][:"Average New Cases (1 Wk Ago)"] = avg_case_1wk
+        elsif counter == 3
+          avg_case_current = data_point.text.strip
+          locations_data[location.to_sym][:"Average New Cases (Current)"] = avg_case_current
+        end
+        counter += 1
+      end
+    end
+
+    puts locations_data
+
   end
 
 end
