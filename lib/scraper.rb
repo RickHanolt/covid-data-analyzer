@@ -64,22 +64,24 @@ class Scraper
       state.css('div.cell.sub-cell.week').each do |data_point|
         if counter == 0
           avg_case_3wk = data_point.text.strip
-          locations_data[location.to_sym][:"Average New Cases (3 Wks Ago)"] = avg_case_3wk
+          locations_data[location.to_sym][:"Avg New Cases (3 Wks Ago)"] = avg_case_3wk
         elsif counter == 1
           avg_case_2wk = data_point.text.strip
-          locations_data[location.to_sym][:"Average New Cases (2 Wks Ago)"] = avg_case_2wk
+          locations_data[location.to_sym][:"Avg New Cases (2 Wks Ago)"] = avg_case_2wk
         elsif counter == 2
           avg_case_1wk = data_point.text.strip
-          locations_data[location.to_sym][:"Average New Cases (1 Wk Ago)"] = avg_case_1wk
+          locations_data[location.to_sym][:"Avg New Cases (1 Wk Ago)"] = avg_case_1wk
         elsif counter == 3
           avg_case_current = data_point.text.strip
-          locations_data[location.to_sym][:"Average New Cases (Current)"] = avg_case_current
+          locations_data[location.to_sym][:"Avg New Cases (Current)"] = avg_case_current
         end
         counter += 1
       end
     end
 
-    puts locations_data
+    locations_data.each do |state|
+      puts state
+    end
 
   end
 
