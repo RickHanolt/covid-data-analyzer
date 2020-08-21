@@ -12,7 +12,7 @@ attr_reader :data, :name
     temp_scraper.historical_data[state.to_sym].each do |key,value|
       @data[key] = value
     end
-    @@all << self if State.all.none?{|state_name| state_name.name == state}
+    @@all << self
   end
 
   def self.all
