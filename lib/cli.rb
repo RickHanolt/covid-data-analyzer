@@ -20,7 +20,6 @@ class CLI
       else
         temp_state_display = State.all.detect{|state| state.name == state_name}
         temp_state_display.data.each{|key, value| puts "#{key}: #{value}"}
-        binding.pry
       end
       welcome
     when "2"
