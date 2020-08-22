@@ -82,6 +82,21 @@ class Scraper
     locations_data
   end
 
+  def self.state_population(get_state_population)
+    doc = Nokogiri::HTML(open("https://www.infoplease.com/us/states/state-population-by-rank"))
+    doc = doc.css("table.sgmltable tbody tr")
+    current_state = ""
+    population = ""
+    count = 0
+    doc.each do |state|
+      if count != 0
+        population = state.css("td")[2].text if state.css("td")[1].text == get_state_population
+      end
+      count += 1
+    end
+    population
+  end
+
 end
 
 #state_abbreviations = ["AL", "AK", "AS", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "GU", "HI", "ID", "IL", "IN",
