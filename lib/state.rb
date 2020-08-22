@@ -10,10 +10,9 @@ attr_accessor :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current
     @name = state
     temp_scraper = Scraper.new
     @population = temp_scraper.state_population(state)
-    @data = temp_scraper.state_scraper[state.to_sym]
+    @data = temp_scraper.state_scraper(state)[state.to_sym]
     historical_cases(state)
     @@all << self
-    binding.pry
   end
 
   def self.all
