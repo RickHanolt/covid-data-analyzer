@@ -53,36 +53,23 @@ class Scraper
     states
   end
 
-  def historical_data
+  def historical_case_scraper(input_state)
+    input_state = "Ohio"
     doc = Nokogiri::HTML(open("https://apps.npr.org/dailygraphics/graphics/coronavirus-d3-us-map-20200312/table.html?initialWidth=1218&childId=responsive-embed-coronavirus-d3-us-map-20200312-table&parentTitle=Coronavirus%20Update%3A%20Maps%20Of%20US%20Cases%20And%20Deaths%20%3A%20Shots%20-%20Health%20News%20%3A%20NPR&parentUrl=https%3A%2F%2Fwww.npr.org%2Fsections%2Fhealth-shots%2F2020%2F03%2F16%2F816707182%2Fmap-tracking-the-spread-of-the-coronavirus-in-the-u-s
     "))
-    locations_data = {}
+    location_data = []
     doc.css('div.div-table div.cell-group.state').each do |state|
       location = state.css('div.cell.cell-inner.stateName').text.strip
-      locations_data[:"#{location}"] = {}
-      counter = 0
-      state.css('div.cell.sub-cell.week').each do |data_point|
-        if counter == 0
-          avg_case_3wk = data_point.text.strip
-          locations_data[location.to_sym][:"Avg New Cases (3 Wks Ago)"] = avg_case_3wk
-        elsif counter == 1
-          avg_case_2wk = data_point.text.strip
-          locations_data[location.to_sym][:"Avg New Cases (2 Wks Ago)"] = avg_case_2wk
-        elsif counter == 2
-          avg_case_1wk = data_point.text.strip
-          locations_data[location.to_sym][:"Avg New Cases (1 Wk Ago)"] = avg_case_1wk
-        elsif counter == 3
-          avg_case_current = data_point.text.strip
-          locations_data[location.to_sym][:"Avg New Cases (Current)"] = avg_case_current
+      if location == input_state
+        state.css('div.cell.sub-cell.week').each do |data_point|
+            location_data << data_point.text.strip
         end
-        counter += 1
       end
     end
-
-    locations_data
+    location_data
   end
 
-  def self.state_population(get_state_population)
+  def state_population(input_state)
     doc = Nokogiri::HTML(open("https://www.infoplease.com/us/states/state-population-by-rank"))
     doc = doc.css("table.sgmltable tbody tr")
     current_state = ""
@@ -90,7 +77,7 @@ class Scraper
     count = 0
     doc.each do |state|
       if count != 0
-        population = state.css("td")[2].text if state.css("td")[1].text == get_state_population
+        population = state.css("td")[2].text if state.css("td")[1].text == input_state
       end
       count += 1
     end
