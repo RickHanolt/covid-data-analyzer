@@ -1,7 +1,6 @@
 require 'pry'
 require 'nokogiri'
 require 'open-uri'
-require 'watir'
 
 class Scraper
 
@@ -9,7 +8,7 @@ class Scraper
     doc = Nokogiri::HTML(open('https://coronavirus.jhu.edu/data/new-cases-50-states'))
     state_link = ""
     base = 'https://coronavirus.jhu.edu'
-    doc.css('g.cartesianlayer g g.plot a').each do |state|
+    doc.css('g.plot a').each do |state|
       state_link = base + state.attr('href') if state.attr('href').gsub(/\/data\/new-cases-50-states\//,"").capitalize == input_state
     end
     state_link
@@ -54,6 +53,7 @@ class Scraper
     end
     population
   end
+
 
 end
 
