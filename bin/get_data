@@ -5,5 +5,7 @@ require_relative '../lib/cli'
 require_relative '../lib/scraper'
 require_relative '../lib/state'
 
+temp_scraper = Scraper.new
+temp_scraper.try_httparty
 temp_cli = CLI.new
 temp_cli.welcome

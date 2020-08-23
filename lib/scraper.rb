@@ -1,6 +1,7 @@
 require 'pry'
 require 'nokogiri'
 require 'open-uri'
+require 'httparty'
 
 class Scraper
 
@@ -54,7 +55,12 @@ class Scraper
     population
   end
 
-
+  def try_httparty
+    url = 'https://api.covidtracking.com/v1/states/daily.json'
+    response = HTTParty.get(url)
+    response.parsed_response
+    binding.pry
+  end
 end
 
 #state_abbreviations = ["AL", "AK", "AS", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "GU", "HI", "ID", "IL", "IN",
