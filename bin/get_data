@@ -5,5 +5,7 @@ require_relative '../lib/cli'
 require_relative '../lib/scraper'
 require_relative '../lib/state'
 
-
-CLI.welcome
+temp_scraper = Scraper.new
+temp_scraper.jhu_state_links
+temp_cli = CLI.new
+temp_cli.welcome

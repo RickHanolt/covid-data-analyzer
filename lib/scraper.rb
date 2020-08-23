@@ -11,6 +11,7 @@ class Scraper
     doc.css('g.cartesianlayer g g.plot').each do |state|
       states << base + (state.css('a').attr('href').value)
     end
+    binding.pry
   end
 
   def state_scraper(input_state)

@@ -2,7 +2,7 @@ require 'pry'
 
 class CLI
 
-  def self.welcome
+  def welcome
     user_selection = ""
     puts "Welcome! What would you like to do?"
     while user_selection == ""
@@ -15,12 +15,8 @@ class CLI
     when "1"
       puts "What state would you like data for?"
       state_name = gets.strip
-      if State.all.none?{|state| state.name == state_name}
-        State.new(state_name).data.each{|key, value| puts "#{key}: #{value}"}
-      else
-        temp_state_display = State.all.detect{|state| state.name == state_name}
-        temp_state_display.data.each{|key, value| puts "#{key}: #{value}"}
-      end
+      temp_state = State.new(state_name)
+      puts temp_state
       welcome
     when "2"
       return
@@ -28,4 +24,5 @@ class CLI
       welcome
     end
   end
+
 end
