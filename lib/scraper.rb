@@ -58,8 +58,11 @@ class Scraper
   def try_httparty
     url = 'https://api.covidtracking.com/v1/states/daily.json'
     response = HTTParty.get(url)
-    response.parsed_response
+    response = response.parsed_response
     binding.pry
+    current_date = Date.today.strftime.tr('-','') ##yyyymmdd format
+    one_week_ago = (Date.today - 7).strftime.tr('-','') ##yyyymmdd format
+    two_weeks_ago = (Date.today - 14).strftime.tr('-','') ##yyyymmdd format
   end
 end
 
