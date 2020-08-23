@@ -15,7 +15,7 @@ class CLI
     when "1"
       puts "What state would you like data for?"
       state_name = gets.strip
-      temp_state = State.new(state_name)
+      temp_state = State.find_or_create_state(state_name)
       puts temp_state
       welcome
     when "2"

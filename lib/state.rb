@@ -1,7 +1,7 @@
 require 'pry'
 
 class State
-attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, :currently_hospitalized, :cumulitive_hospitalized, :current_icu, :cumulitive_icu, :current_ventilator, :cumulitive_ventilator, :recovered, :deaths, :total_test_results, :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current
+attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, :currently_hospitalized, :cumulitive_hospitalized, :current_icu, :cumulitive_icu, :current_ventilator, :cumulitive_ventilator, :recovered, :deaths, :total_test_results, :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current, :state_link
 
 @@all = []
 
@@ -11,11 +11,17 @@ attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, 
     @population = temp_scraper.state_population(state)
     current_data(state)
     historical_cases(state)
+    jhu_state_link(state)
     @@all << self
   end
 
   def self.all
     @@all
+  end
+
+  def jhu_state_link(state)
+    temp_scraper = Scraper.new
+    @state_link = temp_scraper.jhu_state_link_scraper(state)
   end
 
   def historical_cases(state)
@@ -66,6 +72,10 @@ attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, 
       end
       counter += 1
     end
+  end
+
+  def self.find_or_create_state(state)
+    @@all.map{|state| state.name}.include?(state)? @@all.find{|temp_state| temp_state.name == state} : State.new(state)
   end
 
 end

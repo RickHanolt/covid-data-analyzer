@@ -4,14 +4,14 @@ require 'open-uri'
 
 class Scraper
 
-  def jhu_state_links
+  def jhu_state_link_scraper(input_state)
     doc = Nokogiri::HTML(open('https://coronavirus.jhu.edu/data/new-cases-50-states'))
-    states = []
+    state_link = ""
     base = 'https://coronavirus.jhu.edu'
-    doc.css('g.cartesianlayer g g.plot').each do |state|
-      states << base + (state.css('a').attr('href').value)
+    doc.css('g.cartesianlayer g g.plot a').each do |state|
+      state_link = base + state.attr('href') if state.attr('href').gsub(/\/data\/new-cases-50-states\//,"").capitalize == input_state
     end
-    binding.pry
+    state_link
   end
 
   def state_scraper(input_state)
