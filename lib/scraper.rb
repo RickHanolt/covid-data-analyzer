@@ -55,14 +55,18 @@ class Scraper
     population
   end
 
-  def try_httparty
+  def try_httparty(input_state)
+    current_date = Date.today.strftime.tr('-','').to_i ##yyyymmdd format
+    one_week_ago = (Date.today - 7).strftime.tr('-','').to_i ##yyyymmdd format
+    two_weeks_ago = (Date.today - 14).strftime.tr('-','').to_i ##yyyymmdd format
     url = 'https://api.covidtracking.com/v1/states/daily.json'
     response = HTTParty.get(url)
     response = response.parsed_response
-    binding.pry
-    current_date = Date.today.strftime.tr('-','') ##yyyymmdd format
-    one_week_ago = (Date.today - 7).strftime.tr('-','') ##yyyymmdd format
-    two_weeks_ago = (Date.today - 14).strftime.tr('-','') ##yyyymmdd format
+    response = response.select{|data_set| data_set['state'] == "AK"}
+    response = response.select{|data_set| data_set['date'] == current_date || data_set['date'] == one_week_ago || data_set['date'] == two_weeks_ago}
+
+    ## Must fix scenario where data is not out for the current date yet.
+
   end
 end
 
