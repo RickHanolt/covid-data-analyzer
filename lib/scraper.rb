@@ -55,29 +55,26 @@ class Scraper
     population
   end
 
-  def covid_tracking_api(input_state)
+  def covid_tracking_api_last_3_weeks(input_state)
     state_abbreviation = @@all_states.find{|state| state[1] == input_state}[0]
-    
+
     ## These variables convert date to yyyymmdd format.
-    current_date = Date.today.strftime.tr('-','').to_i ##yyyymmdd format
-    one_week_ago = (Date.today - 7).strftime.tr('-','').to_i 
-    two_weeks_ago = (Date.today - 14).strftime.tr('-','').to_i 
-    yesterday = (Date.today - 1).strftime.tr('-','').to_i 
-    eight_days_ago = (Date.today - 8).strftime.tr('-','').to_i 
-    fifteen_days_ago = (Date.today - 15).strftime.tr('-','').to_i 
+    ## current_date = Date.today.strftime.tr('-','').to_i ##yyyymmdd format
+    ## one_week_ago = (Date.today - 7).strftime.tr('-','').to_i
+    ## two_weeks_ago = (Date.today - 14).strftime.tr('-','').to_i
+    ## yesterday = (Date.today - 1).strftime.tr('-','').to_i
+    ## eight_days_ago = (Date.today - 8).strftime.tr('-','').to_i
+    ## fifteen_days_ago = (Date.today - 15).strftime.tr('-','').to_i
+
     url = 'https://api.covidtracking.com/v1/states/daily.json'
     response = HTTParty.get(url)
     response = response.parsed_response
     response = response.select{|data_set| data_set['state'] == state_abbreviation}
-    if response[0]['date'] == current_date
-      response = response.select{|data_set| data_set['date'] == current_date || data_set['date'] == one_week_ago || data_set['date'] == two_weeks_ago}
-    else
-      response = response.select{|data_set| data_set['date'] == yesterday || data_set['date'] == eight_days_ago || data_set['date'] == fifteen_days_ago}
-    end
+    pop_size = response.count - 21
+    response.pop(pop_size)
     response
-
   end
-  
+
   @@all_states = [["AK", "Alaska"],
                 ["AL", "Alabama"],
                 ["AR", "Arkansas"],

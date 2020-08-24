@@ -1,14 +1,18 @@
 require 'pry'
 
 class State
-attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, :currently_hospitalized, :cumulitive_hospitalized, :current_icu, :cumulitive_icu, :current_ventilator, :cumulitive_ventilator, :recovered, :deaths, :total_test_results, :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current, :state_link
+attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, :currently_hospitalized, :cumulitive_hospitalized, :current_icu, :cumulitive_icu, :current_ventilator, :cumulitive_ventilator, :recovered, :deaths, :total_test_results, :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current, :state_link, :testing_avg_current, :testing_avg_last_week, :testing_avg_two_weeks_ago
 
 @@all = []
 
   def initialize(state)
     @name = state
     temp_scraper = Scraper.new
+    temp_analyzer = Analyzer.new
     @population = temp_scraper.state_population(state)
+    @testing_avg_current = temp_analyzer.seven_day_testing_average(state)[0]
+    @testing_avg_last_week = temp_analyzer.seven_day_testing_average(state)[1]
+    @testing_avg_two_weeks_ago = temp_analyzer.seven_day_testing_average(state)[2]
     current_data(state)
     historical_cases(state)
     jhu_state_link(state)

@@ -5,8 +5,5 @@ require_relative '../lib/cli'
 require_relative '../lib/scraper'
 require_relative '../lib/state'
 
-state = "Ohio"
-temp_scraper = Scraper.new
-temp_scraper.covid_tracking_api(state)
 temp_cli = CLI.new
 temp_cli.welcome
