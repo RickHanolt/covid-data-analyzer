@@ -55,22 +55,82 @@ class Scraper
     population
   end
 
-  def try_httparty(input_state)
+  def covid_tracking_api(input_state)
+    state_abbreviation = @@all_states.find{|state| state[1] == input_state}[0]
+    
+    ## These variables convert date to yyyymmdd format.
     current_date = Date.today.strftime.tr('-','').to_i ##yyyymmdd format
-    one_week_ago = (Date.today - 7).strftime.tr('-','').to_i ##yyyymmdd format
-    two_weeks_ago = (Date.today - 14).strftime.tr('-','').to_i ##yyyymmdd format
+    one_week_ago = (Date.today - 7).strftime.tr('-','').to_i 
+    two_weeks_ago = (Date.today - 14).strftime.tr('-','').to_i 
+    yesterday = (Date.today - 1).strftime.tr('-','').to_i 
+    eight_days_ago = (Date.today - 8).strftime.tr('-','').to_i 
+    fifteen_days_ago = (Date.today - 15).strftime.tr('-','').to_i 
     url = 'https://api.covidtracking.com/v1/states/daily.json'
     response = HTTParty.get(url)
     response = response.parsed_response
-    response = response.select{|data_set| data_set['state'] == "AK"}
-    response = response.select{|data_set| data_set['date'] == current_date || data_set['date'] == one_week_ago || data_set['date'] == two_weeks_ago}
-
-    ## Must fix scenario where data is not out for the current date yet.
+    response = response.select{|data_set| data_set['state'] == state_abbreviation}
+    if response[0]['date'] == current_date
+      response = response.select{|data_set| data_set['date'] == current_date || data_set['date'] == one_week_ago || data_set['date'] == two_weeks_ago}
+    else
+      response = response.select{|data_set| data_set['date'] == yesterday || data_set['date'] == eight_days_ago || data_set['date'] == fifteen_days_ago}
+    end
+    response
 
   end
+  
+  @@all_states = [["AK", "Alaska"],
+                ["AL", "Alabama"],
+                ["AR", "Arkansas"],
+                ["AS", "American Samoa"],
+                ["AZ", "Arizona"],
+                ["CA", "California"],
+                ["CO", "Colorado"],
+                ["CT", "Connecticut"],
+                ["DC", "District of Columbia"],
+                ["DE", "Delaware"],
+                ["FL", "Florida"],
+                ["GA", "Georgia"],
+                ["GU", "Guam"],
+                ["HI", "Hawaii"],
+                ["IA", "Iowa"],
+                ["ID", "Idaho"],
+                ["IL", "Illinois"],
+                ["IN", "Indiana"],
+                ["KS", "Kansas"],
+                ["KY", "Kentucky"],
+                ["LA", "Louisiana"],
+                ["MA", "Massachusetts"],
+                ["MD", "Maryland"],
+                ["ME", "Maine"],
+                ["MI", "Michigan"],
+                ["MN", "Minnesota"],
+                ["MO", "Missouri"],
+                ["MS", "Mississippi"],
+                ["MT", "Montana"],
+                ["NC", "North Carolina"],
+                ["ND", "North Dakota"],
+                ["NE", "Nebraska"],
+                ["NH", "New Hampshire"],
+                ["NJ", "New Jersey"],
+                ["NM", "New Mexico"],
+                ["NV", "Nevada"],
+                ["NY", "New York"],
+                ["OH", "Ohio"],
+                ["OK", "Oklahoma"],
+                ["OR", "Oregon"],
+                ["PA", "Pennsylvania"],
+                ["PR", "Puerto Rico"],
+                ["RI", "Rhode Island"],
+                ["SC", "South Carolina"],
+                ["SD", "South Dakota"],
+                ["TN", "Tennessee"],
+                ["TX", "Texas"],
+                ["UT", "Utah"],
+                ["VA", "Virginia"],
+                ["VI", "Virgin Islands"],
+                ["VT", "Vermont"],
+                ["WA", "Washington"],
+                ["WI", "Wisconsin"],
+                ["WV", "West Virginia"],
+                ["WY", "Wyoming"] ]
 end
-
-#state_abbreviations = ["AL", "AK", "AS", "AZ", "AR", "CA", "CO", "CT", "DE", "DC", "FL", "GA", "GU", "HI", "ID", "IL", "IN",
-#                        "IA", "KS", "KY", "LA", "ME", "MD", "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ", "NM",
-#                         "NY", "NC", "ND", "MP", "OH", "OK", "OR", "PA", "PR", "RI", "SC", "SD", "TN", "TX", "VI", "UT", "VT",
-#                          "VA", "WA", "WV", "WI", "WY"]

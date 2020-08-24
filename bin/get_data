@@ -7,6 +7,6 @@ require_relative '../lib/state'
 
 state = "Ohio"
 temp_scraper = Scraper.new
-temp_scraper.try_httparty(state)
+temp_scraper.covid_tracking_api(state)
 temp_cli = CLI.new
 temp_cli.welcome
