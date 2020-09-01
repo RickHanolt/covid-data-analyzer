@@ -23,10 +23,8 @@ class Analyzer
   end
   
   def seven_day_testing_change(state)
-    one_week_testing_change = (seven_day_testing_average(state)[0] - seven_day_testing_average(state)[1]) / ((seven_day_testing_average(state)[0] + seven_day_testing_average(state)[1]) / 2)
-    @@all[0].testing_avg_current/@@all[0].testing_avg_last_week=
-    
-    binding.pry
+    one_week_testing_change = (seven_day_testing_average(state)[0] - seven_day_testing_average(state)[1]) / ((seven_day_testing_average(state)[0].to_f + seven_day_testing_average(state)[1]) / 2)
+    one_week_testing_change
   end
   
 end
