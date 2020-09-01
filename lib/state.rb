@@ -17,6 +17,7 @@ attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, 
     historical_cases(state)
     jhu_state_link(state)
     @@all << self
+    binding.pry
   end
 
   def self.all

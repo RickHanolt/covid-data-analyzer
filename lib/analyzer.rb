@@ -18,5 +18,15 @@ class Analyzer
       weekly_average << (tests_this_week / 7)
       weekly_average << (tests_last_week / 7)
       weekly_average << (tests_two_weeks_ago / 7)
+      
+      weekly_average
   end
+  
+  def seven_day_testing_change(state)
+    one_week_testing_change = (seven_day_testing_average(state)[0] - seven_day_testing_average(state)[1]) / ((seven_day_testing_average(state)[0] + seven_day_testing_average(state)[1]) / 2)
+    @@all[0].testing_avg_current/@@all[0].testing_avg_last_week=
+    
+    binding.pry
+  end
+  
 end
