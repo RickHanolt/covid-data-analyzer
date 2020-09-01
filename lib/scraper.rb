@@ -8,9 +8,10 @@ class Scraper
   def jhu_state_link_scraper(input_state)
     doc = Nokogiri::HTML(open('https://coronavirus.jhu.edu/data/new-cases-50-states'))
     state_link = ""
+    input_state = input_state.downcase.gsub(" ", "-")
     base = 'https://coronavirus.jhu.edu'
     doc.css('g.plot a').each do |state|
-      state_link = base + state.attr('href') if state.attr('href').gsub(/\/data\/new-cases-50-states\//,"").capitalize == input_state
+      state_link = base + state.attr('href') if state.attr('href').gsub(/\/data\/new-cases-50-states\//,"") == input_state
     end
     state_link
   end
