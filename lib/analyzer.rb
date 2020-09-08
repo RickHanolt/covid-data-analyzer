@@ -27,4 +27,14 @@ class Analyzer
     one_week_testing_change
   end
   
+  def seven_day_case_change(state)
+    avg_case = 0.0
+    State.all.each do |s|
+      if s.name == state
+        avg_case = (s.avg_case_current.gsub(",","").to_f - s.avg_case_1wk.gsub(",","").to_f)/s.avg_case_current.gsub(",","").to_f
+      end
+    end
+    avg_case if avg_case
+  end  
+    
 end
