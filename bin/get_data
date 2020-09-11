@@ -4,6 +4,7 @@ require_relative '../lib/analyzer'
 require_relative '../lib/cli'
 require_relative '../lib/scraper'
 require_relative '../lib/state'
+require_relative '../lib/state_verifier'
 
 temp_cli = CLI.new
 temp_cli.welcome
