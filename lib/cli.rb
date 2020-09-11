@@ -73,6 +73,8 @@ class CLI
       if @@all_states.any?{|state| state[1] == state_name}
  
         temp_state = State.find_or_create_state(state_name)
+        puts "Change in case count vs. prior week: #{temp_state.one_week_case_change.round(2)}%"
+        puts "Change in testing vs. prior week: #{temp_state.one_week_testing_change.round(2)}%"
         puts "For more information, please visit #{temp_state.state_link} ."
       else
         puts "Invalid state name. Please enter a valid state."

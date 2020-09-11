@@ -19,7 +19,6 @@ attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, 
     jhu_state_link(state)
     @@all << self
     @one_week_case_change = temp_analyzer.seven_day_case_change(state)
-    binding.pry
   end
 
   def self.all
