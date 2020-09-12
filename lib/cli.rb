@@ -72,12 +72,16 @@ class CLI
       state_name = gets.strip
       temp_verifier = StateVerifier.new
       if @@all_states.any?{|state| state[1] == state_name}
-        temp_state = State.find_or_create_state(state_name)
-        puts "Change in case count vs. prior week: #{temp_state.one_week_case_change.round(2)}%"
-        puts "Change in testing vs. prior week: #{temp_state.one_week_testing_change.round(2)}%"
-        puts "For more information, please visit #{temp_state.state_link} ."
+        data_output(state_name)
       elsif temp_verifier.state_checker(state_name)[0] >= 0.50
-        puts "Did you mean #{temp_verifier.state_checker(state_name)[1]}?"
+        puts "Did you mean #{temp_verifier.state_checker(state_name)[1]}? (Y/N)"
+        user_input = gets.strip
+        if user_input == "Y" || user_input == "y" || user_input == "Yes" || user_input == "yes"
+          state_name = temp_verifier.state_checker(state_name)[1]
+          data_output(state_name)
+        elsif user_input == "N"
+          welcome
+        end
       else
         puts "Invalid state name. Please enter a valid state."
       end
@@ -89,4 +93,17 @@ class CLI
     end
   end
 
+  def data_output(state_name)
+    puts "Retrieving state data..."
+
+    temp_state = State.find_or_create_state(state_name)
+    puts " "
+    puts "- #{state_name} -"
+    puts " "
+    puts "Change in case count vs. prior week: #{temp_state.one_week_case_change.round(2)}%"
+    puts "Change in testing vs. prior week: #{temp_state.one_week_testing_change.round(2)}%"
+    puts "For more information, please visit #{temp_state.state_link} ." if temp_state.state_link != ""
+    puts "Press <Return> key to continue"
+    gets
+  end
 end
