@@ -70,12 +70,16 @@ class CLI
     when "1"
       puts "What state would you like data for?"
       state_name = gets.strip
+      temp_verifier = StateVerifier.new
+      binding.pry
       if @@all_states.any?{|state| state[1] == state_name}
- 
         temp_state = State.find_or_create_state(state_name)
         puts "Change in case count vs. prior week: #{temp_state.one_week_case_change.round(2)}%"
         puts "Change in testing vs. prior week: #{temp_state.one_week_testing_change.round(2)}%"
         puts "For more information, please visit #{temp_state.state_link} ."
+      elsif temp_verifier.state_checker(state_name) >= 0.50
+        puts "Did you mean #{}?"
+        binding.pry
       else
         puts "Invalid state name. Please enter a valid state."
       end
