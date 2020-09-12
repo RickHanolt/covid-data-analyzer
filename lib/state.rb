@@ -16,18 +16,12 @@ attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, 
     @one_week_testing_change = temp_analyzer.seven_day_testing_change(state)
     current_data(state)
     historical_cases(state)
-    jhu_state_link(state)
     @@all << self
     @one_week_case_change = temp_analyzer.seven_day_case_change(state)
   end
 
   def self.all
     @@all
-  end
-
-  def jhu_state_link(state)
-    temp_scraper = Scraper.new
-    @state_link = temp_scraper.jhu_state_link_scraper(state)
   end
 
   def historical_cases(state)

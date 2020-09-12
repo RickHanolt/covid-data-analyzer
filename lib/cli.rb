@@ -98,14 +98,14 @@ class CLI
 
   def data_output(state_name)
     puts "Retrieving state data..."
-
     temp_state = State.find_or_create_state(state_name)
+    temp_state_abbreviation = @@all_states.find{|state| state[1] == temp_state.name}[0]
     puts " "
     puts "- #{state_name} -"
     puts " "
     puts "Change in case count vs. prior week: #{temp_state.one_week_case_change.round(2)}%"
     puts "Change in testing vs. prior week: #{temp_state.one_week_testing_change.round(2)}%"
-    puts "For more information, please visit #{temp_state.state_link} ." if temp_state.state_link != ""
+    puts "For more information, please visit https://covidactnow.org/us/#{temp_state_abbreviation} ."
     puts "Press <Return> key to continue"
     gets
   end
