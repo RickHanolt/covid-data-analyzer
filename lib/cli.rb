@@ -70,6 +70,9 @@ class CLI
     when "1"
       puts "What state would you like data for?"
       state_name = gets.strip
+      if state_name == ""
+        state_name = "."
+      end
       temp_verifier = StateVerifier.new
       if @@all_states.any?{|state| state[1] == state_name}
         data_output(state_name)
