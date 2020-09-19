@@ -80,6 +80,7 @@ class CLI
         state_name = temp_verifier.state_checker(state_name)[1]
         data_output(state_name)
       elsif temp_verifier.state_checker(state_name)[0] >= 0.50
+        binding.pry
         puts "Did you mean #{temp_verifier.state_checker(state_name)[1]}? (Y/N)"
         user_input = gets.strip
         if user_input == "Y" || user_input == "y" || user_input == "Yes" || user_input == "yes"

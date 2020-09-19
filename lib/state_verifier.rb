@@ -59,13 +59,9 @@ class StateVerifier
               ["WV", "West Virginia"],
               ["WY", "Wyoming"] ]
 
-
-  @@a_test_state = [["OH","Ohio"]]
-
   def state_checker(state_input)
     matching = nil
     possible_match = []
-    binding.pry
     state_input = state_input.delete(" ").downcase.split('').sort.join
     limit = state_input.length
     @@all_states.each do |state|
@@ -81,9 +77,12 @@ class StateVerifier
         counter += 1
       end
       possible_match << [(matching.to_f/state_input.length).round(2), state[1]]
-      possible_match = possible_match.sort_by{|percent| percent[0]}
     end
-    possible_match[-1]
+    best_matches = []
+    possible_match = possible_match.sort_by{|percent| percent[0]}
+    possible_match.each { |match_percent, state| best_matches << state if match_percent >= 0.50 }
+    binding.pry
+    best_matches
   end
 
 end
