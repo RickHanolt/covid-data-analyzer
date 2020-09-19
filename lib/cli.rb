@@ -82,16 +82,19 @@ class CLI
         state_name = best_matches[0][1]
         data_output(state_name)
       elsif best_matches[0][0] >= 0.50
+        user_input = 0
+        until user_input >= 1 && user_input <= (best_matches.count + 1)
         puts "Did you mean:"
         best_matches.each_with_index do |match, index|
-          puts "#{index + 1}:#{best_matches[index][1]}"
+          puts "#{index + 1}: #{best_matches[index][1]}"
         end
-        user_input = gets.strip
-        if user_input == "Y" || user_input == "y" || user_input == "Yes" || user_input == "yes"
-          state_name = best_matches[0][1]
-          data_output(state_name)
-        elsif user_input == "N"
-          welcome
+        puts "#{best_matches.count + 1}: None of the above"
+          user_input = gets.strip.to_i
+          if user_input >= 1 && user_input  <= (best_matches.count)
+            state_name = best_matches[user_input - 1][1]
+            data_output(state_name)
+          else
+          end
         end
       else
         puts "Invalid state name. Please enter a valid state."
