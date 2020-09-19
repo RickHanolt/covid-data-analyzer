@@ -80,9 +80,8 @@ class StateVerifier
     end
     best_matches = []
     possible_match = possible_match.sort_by{|percent| percent[0]}
-    possible_match.each { |match_percent, state| best_matches << state if match_percent >= 0.50 }
-    binding.pry
-    best_matches
+    possible_match.each { |match_percent, state| best_matches << [match_percent, state] if match_percent >= 0.50 }
+    best_matches = best_matches.reverse
   end
 
 end

@@ -74,17 +74,21 @@ class CLI
         state_name = "."
       end
       temp_verifier = StateVerifier.new
+      best_matches = temp_verifier.state_checker(state_name)
+      best_matches = [[0],[0]] if best_matches == []
       if @@all_states.any?{|state| state[1] == state_name}
         data_output(state_name)
-      elsif @@all_states.none?{|state| state[1] == state_name} && temp_verifier.state_checker(state_name)[0] == 1
-        state_name = temp_verifier.state_checker(state_name)[1]
+      elsif @@all_states.none?{|state| state[1] == state_name} && best_matches[0][0] == 1
+        state_name = best_matches[0][1]
         data_output(state_name)
-      elsif temp_verifier.state_checker(state_name)[0] >= 0.50
-        binding.pry
-        puts "Did you mean #{temp_verifier.state_checker(state_name)[1]}? (Y/N)"
+      elsif best_matches[0][0] >= 0.50
+        puts "Did you mean:"
+        best_matches.each_with_index do |match, index|
+          puts "#{index + 1}:#{best_matches[index][1]}"
+        end
         user_input = gets.strip
         if user_input == "Y" || user_input == "y" || user_input == "Yes" || user_input == "yes"
-          state_name = temp_verifier.state_checker(state_name)[1]
+          state_name = best_matches[0][1]
           data_output(state_name)
         elsif user_input == "N"
           welcome
