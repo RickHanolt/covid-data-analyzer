@@ -71,7 +71,7 @@ class StateVerifier
       counter = 0
       matching = 0
       while counter < (lower_limit)
-        if state_input[counter] == temp_state[counter]
+        if state_input[counter] == temp_state[counter] || state_input[counter] == temp_state[counter + 1] || state_input[counter] == temp_state[counter - 1] 
           matching += 1
         end
         counter += 1
