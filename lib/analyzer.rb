@@ -4,7 +4,11 @@ class Analyzer
 
   def seven_day_testing_average(state)
     temp_scraper = Scraper.new
-    data_last_three_weeks = temp_scraper.covid_tracking_api_last_3_weeks(state)
+    if temp_scraper.api_data[:"#{state}"]
+      data_last_three_weeks = temp_scraper.api_data[:"#{state}"]
+    elsif !temp_scraper.api_data[:"#{state}"]
+      data_last_three_weeks = temp_scraper.covid_tracking_api_last_3_weeks(state)
+    end
     daily_tests_last_3_weeks = data_last_three_weeks.map{|daily_data| daily_data["totalTestResultsIncrease"]}
     weekly_average = []
     tests_this_week = 0

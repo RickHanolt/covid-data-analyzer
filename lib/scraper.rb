@@ -5,6 +5,8 @@ require 'httparty'
 
 class Scraper
 
+  @@api_data = {}
+
   def state_scraper(input_state)
     doc = Nokogiri::HTML(open('https://covidtracking.com/data'))
     state_data = []
@@ -22,16 +24,16 @@ class Scraper
   def historical_case_scraper(input_state)
     doc = Nokogiri::HTML(open("https://apps.npr.org/dailygraphics/graphics/coronavirus-d3-us-map-20200312/table.html?initialWidth=1218&childId=responsive-embed-coronavirus-d3-us-map-20200312-table&parentTitle=Coronavirus%20Update%3A%20Maps%20Of%20US%20Cases%20And%20Deaths%20%3A%20Shots%20-%20Health%20News%20%3A%20NPR&parentUrl=https%3A%2F%2Fwww.npr.org%2Fsections%2Fhealth-shots%2F2020%2F03%2F16%2F816707182%2Fmap-tracking-the-spread-of-the-coronavirus-in-the-u-s
     "))
-    state_data = []
+    historical_data = []
     doc.css('div.div-table div.cell-group.state').each do |state|
       location = state.css('div.cell.cell-inner.stateName').text.strip
       if location == input_state
         state.css('div.cell.sub-cell.week').each do |data_point|
-            state_data << data_point.text.strip
+            historical_data << data_point.text.strip
         end
       end
     end
-    state_data
+    historical_data
   end
 
   def state_population(input_state)
@@ -62,7 +64,12 @@ class Scraper
     response = response.select{|data_set| data_set['state'] == state_abbreviation}
     pop_size = response.count - 21
     response.pop(pop_size)
+    @@api_data[:"#{input_state}"] = response
     response
+  end
+
+  def api_data
+    @@api_data
   end
 
   @@all_states = [["AK", "Alaska"],
