@@ -23,8 +23,7 @@ class Analyzer
   end
 
   def seven_day_testing_change(state)
-    one_week_testing_change = (seven_day_testing_average(state)[0] - seven_day_testing_average(state)[1]) / ((seven_day_testing_average(state)[0].to_f + seven_day_testing_average(state)[1]) / 2)
-    one_week_testing_change
+    one_week_testing_change = (seven_day_testing_average(state)[0] - seven_day_testing_average(state)[1]) / seven_day_testing_average(state)[1].to_f
     one_week_testing_change_percent = one_week_testing_change * 100
   end
 
@@ -32,7 +31,9 @@ class Analyzer
     avg_case = 0.0
     State.all.each do |s|
       if s.name == state
-        avg_case = (s.avg_case_current.gsub(",","").to_f - s.avg_case_1wk.gsub(",","").to_f)/((s.avg_case_current.gsub(",","").to_f + s.avg_case_1wk.gsub(",","").to_f) / 2)
+        avg_case_current = s.avg_case_current.gsub(",","").to_f
+        avg_case_1wk = s.avg_case_1wk.gsub(",","").to_f
+        avg_case = (avg_case_current - avg_case_1wk) / avg_case_1wk
       end
     end
     avg_case_percent = avg_case * 100 if avg_case
