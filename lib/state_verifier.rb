@@ -65,10 +65,11 @@ class StateVerifier
   def state_checker(state_input)
     matching = nil
     possible_match = []
-    state_input = state_input.gsub(" ","").downcase.split('').sort.join
+    binding.pry
+    state_input = state_input.delete(" ").downcase.split('').sort.join
     limit = state_input.length
     @@all_states.each do |state|
-      temp_state = state[1].gsub(" ","").downcase.split('').sort.join
+      temp_state = state[1].delete(" ").downcase.split('').sort.join
       lower_limit = temp_state.length
       limit > lower_limit ? lower_limit : lower_limit = limit
       counter = 0

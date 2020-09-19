@@ -35,8 +35,8 @@ class Analyzer
     avg_case = 0.0
     State.all.each do |s|
       if s.name == state
-        avg_case_current = s.avg_case_current.gsub(",","").to_f
-        avg_case_1wk = s.avg_case_1wk.gsub(",","").to_f
+        avg_case_current = s.avg_case_current.delete(",").to_f
+        avg_case_1wk = s.avg_case_1wk.delete(",").to_f
         avg_case = (avg_case_current - avg_case_1wk) / avg_case_1wk
       end
     end
