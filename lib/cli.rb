@@ -59,11 +59,12 @@ class CLI
 
   def welcome
     user_selection = ""
-    puts "Welcome! What would you like to do?"
     while user_selection == ""
+      puts "Welcome! What would you like to do?"
       puts "1. Get data for a state"
       puts "2. Exit"
       user_selection = gets.strip
+      puts "Invalid Entry." if user_selection == ""
     end
 
     case user_selection
