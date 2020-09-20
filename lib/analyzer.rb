@@ -43,10 +43,4 @@ class Analyzer
     avg_case_percent = avg_case * 100 if avg_case
   end
 
-  def percent_positive(state)
-    binding.pry
-    temp_state = State.find_state(state)
-    percent_pos = temp_state.cases / temp_state.total_test_results
-  end
-
 end

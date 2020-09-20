@@ -1,7 +1,7 @@
 require 'pry'
 
 class State
-attr_reader :name, :population, :cases, :negative_tests, :currently_hospitalized, :cumulitive_hospitalized, :current_icu, :cumulitive_icu, :current_ventilator, :cumulitive_ventilator, :recovered, :deaths, :total_test_results, :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current, :state_link, :testing_avg_current, :testing_avg_last_week, :testing_avg_two_weeks_ago, :one_week_testing_change, :one_week_case_change, :percent_positive
+attr_reader :name, :population, :cases, :negative_tests, :currently_hospitalized, :cumulitive_hospitalized, :current_icu, :cumulitive_icu, :current_ventilator, :cumulitive_ventilator, :recovered, :deaths, :total_test_results, :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current, :state_link, :testing_avg_current, :testing_avg_last_week, :testing_avg_two_weeks_ago, :one_week_testing_change, :one_week_case_change, :percent_positive, :cases_per_100000, :tests_per_100000, :daily_deaths
 
 @@all = []
 
@@ -16,7 +16,9 @@ attr_reader :name, :population, :cases, :negative_tests, :currently_hospitalized
     @one_week_testing_change = temp_analyzer.seven_day_testing_change(state)
     current_data(state)
     historical_cases(state)
-    @percent_positive = (@cases.to_f / @total_test_results) * 100
+    @percent_positive = (@cases.to_f / @total_test_results_increase) * 100
+    @cases_per_100000 = @avg_case_current.delete(",").to_i / (@population.delete(",").to_f / 100000)
+    @tests_per_100000 = @testing_avg_current.to_i / (@population.delete(",").to_f / 100000)
     @@all << self
     @one_week_case_change = temp_analyzer.seven_day_case_change(state)
   end
@@ -55,7 +57,8 @@ attr_reader :name, :population, :cases, :negative_tests, :currently_hospitalized
     @cumulitive_ventilator = data["onVentilatorCumulative"]
     @recovered = data["recovered"]
     @deaths = data["death"]
-    @total_test_results = data["totalTestResultsIncrease"]
+    @total_test_results_increase = data["totalTestResultsIncrease"]
+    @daily_deaths = data["deathIncrease"]
   end
 
   def self.find_or_create_state(state)
