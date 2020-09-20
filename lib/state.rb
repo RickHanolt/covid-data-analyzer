@@ -1,7 +1,7 @@
 require 'pry'
 
 class State
-attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, :currently_hospitalized, :cumulitive_hospitalized, :current_icu, :cumulitive_icu, :current_ventilator, :cumulitive_ventilator, :recovered, :deaths, :total_test_results, :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current, :state_link, :testing_avg_current, :testing_avg_last_week, :testing_avg_two_weeks_ago, :one_week_testing_change, :one_week_case_change
+attr_reader :name, :population, :cases, :negative_tests, :currently_hospitalized, :cumulitive_hospitalized, :current_icu, :cumulitive_icu, :current_ventilator, :cumulitive_ventilator, :recovered, :deaths, :total_test_results, :avg_case_3wk, :avg_case_2wk, :avg_case_1wk, :avg_case_current, :state_link, :testing_avg_current, :testing_avg_last_week, :testing_avg_two_weeks_ago, :one_week_testing_change, :one_week_case_change, :percent_positive
 
 @@all = []
 
@@ -16,6 +16,7 @@ attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, 
     @one_week_testing_change = temp_analyzer.seven_day_testing_change(state)
     current_data(state)
     historical_cases(state)
+    @percent_positive = (@cases.to_f / @total_test_results) * 100
     @@all << self
     @one_week_case_change = temp_analyzer.seven_day_case_change(state)
   end
@@ -42,36 +43,19 @@ attr_reader :data, :name, :population, :cases, :negative_tests, :pending_tests, 
   end
 
   def current_data(state)
-    counter = 0
     temp_scraper = Scraper.new
-    temp_scraper.state_scraper(state).each do |data_point|
-      if counter == 0
-        @cases = data_point
-      elsif counter == 1
-        @negative_tests = data_point
-      elsif counter == 2
-        @pending_tests = data_point
-      elsif counter == 3
-        @currently_hospitalized = data_point
-      elsif counter == 4
-        @cumulitive_hospitalized = data_point
-      elsif counter == 5
-        @current_icu = data_point
-      elsif counter == 6
-        @cumulitive_icu = data_point
-      elsif counter == 7
-        @current_ventilator = data_point
-      elsif counter == 8
-        @cumulitive_ventilator = data_point
-      elsif counter == 9
-        @recovered = data_point
-      elsif counter == 10
-        @deaths = data_point
-      elsif counter == 11
-        @total_test_results = data_point
-      end
-      counter += 1
-    end
+    data = temp_scraper.most_recent_day_from_api(state)
+    @cases = data["positiveIncrease"]
+    @negative_tests = data["negativeIncrease"]
+    @currently_hospitalized = data["hospitalizedCurrently"]
+    @cumulitive_hospitalized = data["hospitalizedCumulative"]
+    @current_icu = data["inIcuCurrently"]
+    @cumulitive_icu = data["inIcuCumulative"]
+    @current_ventilator = data["onVentilatorCurrently"]
+    @cumulitive_ventilator = data["onVentilatorCumulative"]
+    @recovered = data["recovered"]
+    @deaths = data["death"]
+    @total_test_results = data["totalTestResultsIncrease"]
   end
 
   def self.find_or_create_state(state)

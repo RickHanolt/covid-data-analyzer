@@ -117,6 +117,7 @@ class CLI
     puts " "
     puts "Change in case count vs. prior week: #{temp_state.one_week_case_change.round(2)}%"
     puts "Change in testing vs. prior week: #{temp_state.one_week_testing_change.round(2)}%"
+    puts "Percent positive: #{temp_state.percent_positive.round(2)}%"
     puts "For more information, please visit https://covidactnow.org/us/#{temp_state_abbreviation} ."
     puts "Press <Return> key to continue"
     gets
