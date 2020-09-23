@@ -38,15 +38,6 @@ class Scraper
   end
 
   def covid_tracking_api_last_3_weeks(input_state)
-
-    ## These variables convert date to yyyymmdd format.
-    ## current_date = Date.today.strftime.tr('-','').to_i ##yyyymmdd format
-    ## one_week_ago = (Date.today - 7).strftime.tr('-','').to_i
-    ## two_weeks_ago = (Date.today - 14).strftime.tr('-','').to_i
-    ## yesterday = (Date.today - 1).strftime.tr('-','').to_i
-    ## eight_days_ago = (Date.today - 8).strftime.tr('-','').to_i
-    ## fifteen_days_ago = (Date.today - 15).strftime.tr('-','').to_i
-
     url = 'https://api.covidtracking.com/v1/states/daily.json'
     response = HTTParty.get(url)
     response = response.parsed_response
