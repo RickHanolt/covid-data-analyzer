@@ -2,57 +2,6 @@ require 'pry'
 
 class CLI
 
-  @@all_states = [["AK", "Alaska"],
-              ["AL", "Alabama"],
-              ["AR", "Arkansas"],
-              ["AZ", "Arizona"],
-              ["CA", "California"],
-              ["CO", "Colorado"],
-              ["CT", "Connecticut"],
-              ["DE", "Delaware"],
-              ["FL", "Florida"],
-              ["GA", "Georgia"],
-              ["HI", "Hawaii"],
-              ["IA", "Iowa"],
-              ["ID", "Idaho"],
-              ["IL", "Illinois"],
-              ["IN", "Indiana"],
-              ["KS", "Kansas"],
-              ["KY", "Kentucky"],
-              ["LA", "Louisiana"],
-              ["MA", "Massachusetts"],
-              ["MD", "Maryland"],
-              ["ME", "Maine"],
-              ["MI", "Michigan"],
-              ["MN", "Minnesota"],
-              ["MO", "Missouri"],
-              ["MS", "Mississippi"],
-              ["MT", "Montana"],
-              ["NC", "North Carolina"],
-              ["ND", "North Dakota"],
-              ["NE", "Nebraska"],
-              ["NH", "New Hampshire"],
-              ["NJ", "New Jersey"],
-              ["NM", "New Mexico"],
-              ["NV", "Nevada"],
-              ["NY", "New York"],
-              ["OH", "Ohio"],
-              ["OK", "Oklahoma"],
-              ["OR", "Oregon"],
-              ["PA", "Pennsylvania"],
-              ["RI", "Rhode Island"],
-              ["SC", "South Carolina"],
-              ["SD", "South Dakota"],
-              ["TN", "Tennessee"],
-              ["TX", "Texas"],
-              ["UT", "Utah"],
-              ["VA", "Virginia"],
-              ["VT", "Vermont"],
-              ["WA", "Washington"],
-              ["WI", "Wisconsin"],
-              ["WV", "West Virginia"],
-              ["WY", "Wyoming"] ]
-
   def welcome
     user_selection = ""
     while user_selection == ""
@@ -73,9 +22,9 @@ class CLI
       temp_verifier = StateVerifier.new
       best_matches = temp_verifier.state_checker(state_name)
       best_matches = [[0],[0]] if best_matches == []
-      if @@all_states.any?{|state| state[1] == state_name}
+      if State.all_states.any?{|state| state[1] == state_name}
         data_output(state_name)
-      elsif @@all_states.none?{|state| state[1] == state_name} && best_matches[0][0] == 1
+      elsif State.all_states.none?{|state| state[1] == state_name} && best_matches[0][0] == 1
         state_name = best_matches[0][1]
         data_output(state_name)
       elsif best_matches[0][0] >= 0.50
@@ -107,7 +56,7 @@ class CLI
   def data_output(state_name)
     puts "Retrieving state data..."
     temp_state = State.find_or_create_state(state_name)
-    temp_state_abbreviation = @@all_states.find{|state| state[1] == temp_state.name}[0]
+    temp_state_abbreviation = State.all_states.find{|state| state[1] == temp_state.name}[0]
     puts " "
     puts "- #{state_name} -"
     puts " "

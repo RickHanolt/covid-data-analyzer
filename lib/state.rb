@@ -5,6 +5,57 @@ attr_reader :name, :population, :cases, :negative_tests, :currently_hospitalized
 
 @@all = []
 
+@@all_states = [["AK", "Alaska"],
+            ["AL", "Alabama"],
+            ["AR", "Arkansas"],
+            ["AZ", "Arizona"],
+            ["CA", "California"],
+            ["CO", "Colorado"],
+            ["CT", "Connecticut"],
+            ["DE", "Delaware"],
+            ["FL", "Florida"],
+            ["GA", "Georgia"],
+            ["HI", "Hawaii"],
+            ["IA", "Iowa"],
+            ["ID", "Idaho"],
+            ["IL", "Illinois"],
+            ["IN", "Indiana"],
+            ["KS", "Kansas"],
+            ["KY", "Kentucky"],
+            ["LA", "Louisiana"],
+            ["MA", "Massachusetts"],
+            ["MD", "Maryland"],
+            ["ME", "Maine"],
+            ["MI", "Michigan"],
+            ["MN", "Minnesota"],
+            ["MO", "Missouri"],
+            ["MS", "Mississippi"],
+            ["MT", "Montana"],
+            ["NC", "North Carolina"],
+            ["ND", "North Dakota"],
+            ["NE", "Nebraska"],
+            ["NH", "New Hampshire"],
+            ["NJ", "New Jersey"],
+            ["NM", "New Mexico"],
+            ["NV", "Nevada"],
+            ["NY", "New York"],
+            ["OH", "Ohio"],
+            ["OK", "Oklahoma"],
+            ["OR", "Oregon"],
+            ["PA", "Pennsylvania"],
+            ["RI", "Rhode Island"],
+            ["SC", "South Carolina"],
+            ["SD", "South Dakota"],
+            ["TN", "Tennessee"],
+            ["TX", "Texas"],
+            ["UT", "Utah"],
+            ["VA", "Virginia"],
+            ["VT", "Vermont"],
+            ["WA", "Washington"],
+            ["WI", "Wisconsin"],
+            ["WV", "West Virginia"],
+            ["WY", "Wyoming"] ]
+
   def initialize(state)
     @name = state
     temp_scraper = Scraper.new
@@ -63,6 +114,10 @@ attr_reader :name, :population, :cases, :negative_tests, :currently_hospitalized
 
   def self.find_or_create_state(state)
     @@all.map{|state| state.name}.include?(state)? @@all.find{|temp_state| temp_state.name == state} : State.new(state)
+  end
+
+  def self.all_states
+    @@all_states
   end
 
 end
