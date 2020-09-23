@@ -1,7 +1,6 @@
 require 'pry'
 
 class StateVerifier
-  attr_reader :temp_state
 
   def state_checker(state_input)
     matching = nil
